@@ -76,15 +76,3 @@ print(
     .sort_values(ascending=False)
 )
 
-def engineer_features(df):
-    # Temporal
-    df['time_since_signup'] = (df['purchase_time'] - df['signup_time']).dt.total_seconds() / 3600  # hours
-    df['hour_of_day'] = df['purchase_time'].dt.hour
-    df['day_of_week'] = df['purchase_time'].dt.dayofweek
-    
-    # Velocity (per user)
-    df = df.sort_values(['user_id', 'purchase_time'])
-    df['tx_velocity_1h'] = df.groupby('user_id')['purchase_time'].diff().dt.total_seconds() / 3600
-    # More: rolling counts, etc.
-    
-    return df
